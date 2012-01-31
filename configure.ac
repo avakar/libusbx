@@ -65,7 +65,7 @@ case $host in
 	backend="darwin"
 	threads="posix"
 	LIBS="${LIBS} -lobjc"
-	PC_LIBS_PRIVATE="-Wl,-framework,IOKit -Wl,-framework,CoreFoundation"
+	PC_LIBS_PRIVATE="-Wl,-framework,IOKit -Wl,-framework,CoreFoundation -lobjc"
 	LTLDFLAGS="${LTLDFLAGS} -Wl,-prebind"
 	AC_CHECK_HEADERS([poll.h])
 	AC_CHECK_TYPE([nfds_t],
