@@ -16,6 +16,7 @@
 
 /* Windows backend */
 #define OS_WINDOWS 1
+#define OS_LIBUSB0_WIN32 1
 
 /* type of second poll() argument */
 #define POLL_NFDS_TYPE unsigned int

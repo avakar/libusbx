@@ -35,6 +35,8 @@ const struct usbi_os_backend * const usbi_backend = &linux_usbfs_backend;
 const struct usbi_os_backend * const usbi_backend = &darwin_backend;
 #elif defined(OS_OPENBSD)
 const struct usbi_os_backend * const usbi_backend = &openbsd_backend;
+#elif defined(OS_LIBUSB0_WIN32)
+const struct usbi_os_backend * const usbi_backend = &libusb0_win32_backend;
 #elif defined(OS_WINDOWS)
 const struct usbi_os_backend * const usbi_backend = &windows_backend;
 #else
