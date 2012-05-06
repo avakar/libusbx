@@ -1239,6 +1239,15 @@ struct libusb_transfer * LIBUSB_CALL libusb_alloc_transfer(
 	memset(itransfer, 0, alloc_size);
 	itransfer->num_iso_packets = iso_packets;
 	usbi_mutex_init(&itransfer->lock, NULL);
+
+	if (usbi_backend->init_transfer) {
+		int r = usbi_backend->init_transfer(itransfer);
+		if (r < 0) {
+			usbi_mutex_destroy(&itransfer->lock);
+			free(itransfer);
+			return NULL;
+		}
+	}
 	return USBI_TRANSFER_TO_LIBUSB_TRANSFER(itransfer);
 }
 
@@ -1265,10 +1274,14 @@ void API_EXPORTED libusb_free_transfer(struct libusb_transfer *transfer)
 	if (!transfer)
 		return;
 
+	itransfer = LIBUSB_TRANSFER_TO_USBI_TRANSFER(transfer);
+
+	if (usbi_backend->destroy_transfer)
+		usbi_backend->destroy_transfer(itransfer);
+
 	if (transfer->flags & LIBUSB_TRANSFER_FREE_BUFFER && transfer->buffer)
 		free(transfer->buffer);
 
-	itransfer = LIBUSB_TRANSFER_TO_USBI_TRANSFER(transfer);
 	usbi_mutex_destroy(&itransfer->lock);
 	free(itransfer);
 }

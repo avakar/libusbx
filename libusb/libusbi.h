@@ -887,6 +887,14 @@ struct usbi_os_backend {
 	/* FIXME: linux can't use this any more. if other OS's cannot either,
 	 * then remove this */
 	size_t add_iso_packet_size;
+
+	/* Called from alloc_transfer to initialize the private part
+	 * of the transfer. */
+	int (*init_transfer)(struct usbi_transfer *itransfer);
+
+	/* Called right before the transfer is freed to dispose of the private
+	 * part of the transfer. */
+	void (*destroy_transfer)(struct usbi_transfer *itransfer);
 };
 
 extern const struct usbi_os_backend * const usbi_backend;
@@ -895,5 +903,6 @@ extern const struct usbi_os_backend linux_usbfs_backend;
 extern const struct usbi_os_backend darwin_backend;
 extern const struct usbi_os_backend openbsd_backend;
 extern const struct usbi_os_backend windows_backend;
+extern const struct usbi_os_backend libusb0_win32_backend;
 
 #endif
